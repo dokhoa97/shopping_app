@@ -2,8 +2,6 @@ import React from "react";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Products from "../components/Products/Products";
 import MainLayout from "../layouts/MainLayout";
-
-
 function ProductPage() {
     return (
         <MainLayout>

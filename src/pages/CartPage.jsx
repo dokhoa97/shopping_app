@@ -1,8 +1,8 @@
 import React from "react";
-import MainLayout from "../layouts/MainLayout";
 import { priceAfterDiscount } from "../helper/helper";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import MainLayout from "../layouts/MainLayout";
 
 function CartPage() {
     return (
