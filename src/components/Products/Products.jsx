@@ -4,7 +4,7 @@ import { ShoppingContext } from "../../context/shopping-context";
 import { fetchData } from "../../reducer/action";
 import { priceAfterDiscount } from "../../helper/helper";
 function Products() {
-    const { state: { products, filters: { searchText, brand, category, price } }, dispatch } = useContext(ShoppingContext)
+    const { state: { products, filters: { searchText, brand, category, price, status } }, dispatch } = useContext(ShoppingContext)
     useEffect(() => {
         async function getData() {
             let res = await fetch('https://dummyjson.com/products?limit=100');
@@ -36,6 +36,14 @@ function Products() {
                     let newPrice = priceAfterDiscount(p?.price, p?.discountPercentage)
                     return newPrice >= min
                 })
+            }
+        }
+        if (status.length) {
+            if (status.includes('On sale')) {
+                filteredProducts = filteredProducts.filter(p => p?.discountPercentage > 0)
+            }
+            if (status.includes('In stock')) {
+                filteredProducts = filteredProducts.filter(p => p?.stock > 0)
             }
         }
         return filteredProducts

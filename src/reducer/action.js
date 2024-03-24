@@ -28,3 +28,9 @@ export function searchPrice(payload) {
         payload
     }
 }
+export function searchStatus(payload) {
+    return {
+        type: 'filters/status',
+        payload
+    }
+}

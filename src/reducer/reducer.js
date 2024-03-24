@@ -52,6 +52,21 @@ export default function reducer(state, action) {
                 }
             }
         }
+        case 'filters/status': {
+            let statusList = [...state.filters.status]
+            if (statusList.includes(action.payload)) {
+                statusList = statusList.filter(item => item !== action.payload)
+            } else {
+                statusList.push(action.payload)
+            }
+            return {
+                ...state,
+                filters: {
+                    ...state.filters,
+                    status: statusList
+                }
+            }
+        }
         default: {
             return state
         }
