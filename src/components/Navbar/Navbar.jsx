@@ -42,7 +42,9 @@ function Navbar() {
                                 <FaShoppingCart size={30} className="me-4" />
                             )
                         }
-                        <FaUser size={30} role="button" />
+                        <Link to={'/orderlist'}>
+                            <FaUser size={30} role="button" />
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -126,3 +126,20 @@ input[type='search']::placeholder {
     left: 0;
     z-index: 1000;
 }
+
+.btn-signout {
+    border: 1px solid blue !important;
+    border-radius: 20px !important;
+    padding: 8px 20px !important;
+}
+
+.btn-signout:hover {
+    background-color: blue !important;
+    color: white !important;
+}
+
+.active {
+    background-color: blue !important;
+    color: white !important;
+    border-radius: 3px;
+}
