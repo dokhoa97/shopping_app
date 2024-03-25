@@ -1,10 +1,59 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
-import { priceAfterDiscount } from "../helper/helper";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { cartSelector } from "../store/selectors";
+import cartSlice from "../redux-toolkit/cartSlice";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 function CartPage() {
+    const { cartDetails, cartInfo } = useSelector(cartSelector)
+    const dispatch = useDispatch()
+    const handleIncreament = (item) => {
+        if (item.quantity < item.stock) {
+            dispatch(cartSlice.actions.increamentQuantity(item))
+        } else {
+            toast.warning(`You can't buy this product ${item.stock}`)
+        }
+    }
+    const handleDecreament = (item) => {
+        if (item.quantity > 1) {
+            dispatch(cartSlice.actions.decreamentQuantity(item))
+        } else {
+            Swal.fire({
+                title: `Are you sure remove ${item.title}?`,
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    dispatch(cartSlice.actions.removeCartItem(item.id))
+                    toast.info('Remove is succeed')
+                }
+            })
+        }
+    }
+    const handleRemove = (item) => {
+        Swal.fire({
+            title: `Are you sure remove ${item.title}?`,
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(cartSlice.actions.removeCartItem(item.id))
+                toast.info('Remove is succeed')
+            }
+        })
+    }
     return (
         <MainLayout>
             <div className="container mt-1">
@@ -26,105 +75,58 @@ function CartPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style={{ maxWidth: '200px' }}>
-                                        <div className="d-flex align-items-center">
-                                            <img className="product-image" src="https://cdn.dummyjson.com/product-images/1/3.jpg" alt="" />
-                                            <div className="d-inline">
-                                                <div className="d-block fw-bolder mb-2">{"iPhone 9".toLocaleUpperCase()}</div>
-                                                <div className="d-block">{"Apple".toLocaleUpperCase()}</div>
-                                            </div>
-                                        </div>
+                                {
+                                    cartDetails?.map((item) => (
+                                        <tr key={item.id}>
+                                            <td style={{ maxWidth: '200px' }}>
+                                                <div className="d-flex align-items-center">
+                                                    <img className="product-image" src={item?.images[0]} alt="" />
+                                                    <div className="d-inline">
+                                                        <div className="d-block fw-bolder mb-2">{item?.title.toLocaleUpperCase()}</div>
+                                                        <div className="d-block">{item?.brand.toLocaleUpperCase()}</div>
+                                                    </div>
+                                                </div>
 
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td >
-                                        <div className="cart-quantity-wrap">
-                                            <div className="cart-quantity">
-                                                <span>-</span>
-                                                <span>1</span>
-                                                <span>+</span>
-                                            </div>
-                                        </div>
+                                            </td>
+                                            <td className="text-end">
+                                                ${item.newPrice}
+                                            </td>
+                                            <td >
+                                                <div className="cart-quantity-wrap">
+                                                    <div className="cart-quantity">
+                                                        <span
+                                                            role="button"
+                                                            onClick={() => handleDecreament(item)}
+                                                        >
+                                                            -
+                                                        </span>
+                                                        <span>{item?.quantity}</span>
+                                                        <span
+                                                            role="button"
+                                                            onClick={() => handleIncreament(item)}
+                                                        >
+                                                            +
+                                                        </span>
+                                                    </div>
+                                                </div>
 
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td>
-                                        <div className="action-wrap">
-                                            <span className="btn-remove">&times;</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style={{ maxWidth: '200px' }}>
-                                        <div className="d-flex align-items-center">
-                                            <img className="product-image" src="https://cdn.dummyjson.com/product-images/2/3.jpg" alt="" />
-                                            <div className="d-inline">
-                                                <div className="d-block fw-bolder mb-2">{"iPhone X".toLocaleUpperCase()}</div>
-                                                <div className="d-block">{"Apple".toLocaleUpperCase()}</div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td >
-                                        <div className="cart-quantity-wrap">
-                                            <div className="cart-quantity">
-                                                <span>-</span>
-                                                <span>1</span>
-                                                <span>+</span>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td>
-                                        <div className="action-wrap">
-                                            <span className="btn-remove">&times;</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style={{ maxWidth: '200px' }}>
-                                        <div className="d-flex align-items-center">
-                                            <img className="product-image" src="https://cdn.dummyjson.com/product-images/3/1.jpg" alt="" />
-                                            <div className="d-inline">
-                                                <div className="d-block fw-bolder mb-2">{"Samsung Universe 9".toLocaleUpperCase()}</div>
-                                                <div className="d-block">{"Samsung".toLocaleUpperCase()}</div>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td >
-                                        <div className="cart-quantity-wrap">
-                                            <div className="cart-quantity">
-                                                <span>-</span>
-                                                <span>1</span>
-                                                <span>+</span>
-                                            </div>
-                                        </div>
-
-                                    </td>
-                                    <td className="text-end">
-                                        ${priceAfterDiscount(200, 12.96)}
-                                    </td>
-                                    <td>
-                                        <div className="action-wrap">
-                                            <span className="btn-remove">&times;</span>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </td>
+                                            <td className="text-end">
+                                                ${item?.amount}
+                                            </td>
+                                            <td>
+                                                <div className="action-wrap">
+                                                    <span className="btn-remove"
+                                                        role="button"
+                                                        onClick={() => handleRemove(item)}
+                                                    >
+                                                        &times;
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </table>
                         <div className="row col-md-12">
@@ -139,16 +141,24 @@ function CartPage() {
                             <div className="d-flex flex-column">
                                 <div className="d-flex align-items-center justify-content-between py-2">
                                     <span>Subtotal</span>
-                                    <span className="fw-bolder">$418</span>
+                                    <span className="fw-bolder">${cartInfo?.subtotal}</span>
                                 </div>
                                 <div className="d-flex align-items-center justify-content-between py-2">
                                     <span>Shipping</span>
-                                    <span className="fw-bolder">Free</span>
+                                    <span className="fw-bolder">
+                                        {
+                                            cartInfo?.shiping ? '$' + cartInfo?.shiping : 'Free'
+                                        }
+                                    </span>
+                                </div>
+                                <div className="d-flex align-items-center justify-content-between py-2">
+                                    <span>Total number of products</span>
+                                    <span className="fw-bolder">{cartInfo?.subQuantity}</span>
                                 </div>
                             </div>
                             <div className="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                <span className="fs-6">Total</span>
-                                <span className="fw-bolder fs-6">$418</span>
+                                <span className="fs-6">Total amount</span>
+                                <span className="fw-bolder fs-6">${cartInfo?.total}</span>
                             </div>
                         </div>
                         <div className="customer-info p-3">

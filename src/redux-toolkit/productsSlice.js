@@ -3,7 +3,8 @@ const productsSlice = createSlice({
     name: 'products',
     initialState: {
         loading: 'idle',
-        data: []
+        data: [],
+        totalRow: 0
     },
     reducers: {
         fetchData: (state, action) => {
@@ -17,13 +18,14 @@ const productsSlice = createSlice({
             })
             .addCase(fetchDataThunkAction.fulfilled, (state, action) => {
                 state.loading = 'idle'
-                state.data = action.payload
+                state.data = action.payload?.products
+                state.totalRow = action.payload?.total
             })
     }
 })
 export const fetchDataThunkAction = createAsyncThunk('fetchDataThunkAction', async (limit) => {
     let res = await fetch(`https://dummyjson.com/products?limit=${limit}`)
     let data = await res.json()
-    return data?.products
+    return data
 })
 export default productsSlice;

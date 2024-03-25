@@ -1,12 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { priceAfterDiscount } from "../helper/helper"
-
+export const cartSelector = (state) => state.cart
 export const productsSelector = (state) => state.products
 export const filtersSelector = (state) => state.filters
 export const filteredProducts = createSelector(
     productsSelector,
     filtersSelector,
-    (products, filters) => {
+    cartSelector,
+    (products, filters, cart) => {
         const { searchText, brand, category, price, status } = filters
         let filteredProductData = {
             data: [...products.data],

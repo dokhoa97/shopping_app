@@ -2,8 +2,20 @@ import React from "react";
 import { FaCartArrowDown } from "react-icons/fa";
 import { priceAfterDiscount } from "../../helper/helper";
 import CreateStar from "../star/CreateStar";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../redux-toolkit/cartSlice";
+import { toast } from "react-toastify";
 
 function Product({ product }) {
+    product = {
+        ...product,
+        newPrice: priceAfterDiscount(product?.price, product?.discountPercentage)
+    }
+    const dispatch = useDispatch()
+    const handleAddToCart = () => {
+        dispatch(cartSlice.actions.addToCart(product))
+        toast.success('Succeed!!')
+    }
     return (
         <div className="col-md-3 mb-4">
             <div className="card d-flex align-items-center pt-4">
@@ -31,7 +43,9 @@ function Product({ product }) {
                             <del className="line-through me-2">${product?.price}</del>
                             <span className="fs-4 text-danger fw-bolder">${priceAfterDiscount(product?.price, product?.discountPercentage)}</span>
                         </div>
-                        <FaCartArrowDown size={20} className="btn-cart" />
+                        <FaCartArrowDown size={20} className="btn-cart"
+                            onClick={handleAddToCart}
+                        />
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ var limit = 10;
 function Products() {
     const dispatch = useDispatch()
     const state = useSelector(filteredProducts)
+    const totalRow = useSelector(state => state.products?.totalRow)
     useEffect(() => {
         dispatch(fetchDataThunkAction(limit))
     }, [])
@@ -21,11 +22,10 @@ function Products() {
             <h5>Products</h5>
             <InfiniteScroll
                 dataLength={state.data.length}
-                hasMore={true}
-                // loader={<Spinner />}
+                hasMore={limit < totalRow}
                 next={loadMore}
                 style={{ overflow: 'hidden' }}
-                endMessage={<p>You have seen it all!</p>}
+                endMessage={<h2 style={{ textAlign: 'center', color: 'red' }}>You have seen it all!</h2>}
             >
                 {
                     state.loading === 'loading' ? <Spinner /> : (
