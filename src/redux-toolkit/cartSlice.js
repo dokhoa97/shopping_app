@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from 'uuid';
 const cartSlice = createSlice({
     name: 'cart',
@@ -93,7 +93,31 @@ const cartSlice = createSlice({
             state.cartInfo.subtotal = newSubtotal
             state.cartInfo.total = newTotal
             state.cartInfo.subQuantity = newSubQuantity
-        }
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(checkoutThunkAction.fulfilled, (state, action) => {
+                state.cartId = uuidv4()
+                state.cartInfo = {
+                    subtotal: 0,
+                    shipping: 0,
+                    total: 0,
+                    subQuantity: 0,
+                    orderDate: new Date().valueOf()
+                }
+                state.cartDetails = []
+                state.customerInfo = {
+                    fullname: '',
+                    address: '',
+                    email: '',
+                    mobile: ''
+                }
+            }
+            )
     }
+})
+export const checkoutThunkAction = createAsyncThunk('cart/checkout', async (data) => {
+    console.log(data);
 })
 export default cartSlice

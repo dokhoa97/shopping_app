@@ -4,13 +4,24 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cartSelector } from "../store/selectors";
-import cartSlice from "../redux-toolkit/cartSlice";
+import cartSlice, { checkoutThunkAction } from "../redux-toolkit/cartSlice";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+const schema = yup.object({
+    fullname: yup.string().required(),
+    address: yup.string().required(),
+    email: yup.string().email().required(),
+    mobile: yup.number().required()
+})
 function CartPage() {
-    const { cartDetails, cartInfo } = useSelector(cartSelector)
+    const { cartId, cartDetails, cartInfo } = useSelector(cartSelector)
     const dispatch = useDispatch()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    })
     const handleIncreament = (item) => {
         if (item.quantity < item.stock) {
             dispatch(cartSlice.actions.increamentQuantity(item))
@@ -51,6 +62,30 @@ function CartPage() {
             if (result.isConfirmed) {
                 dispatch(cartSlice.actions.removeCartItem(item.id))
                 toast.info('Remove is succeed')
+            }
+        })
+    }
+    const handleCreateCustomerInfo = (values) => {
+        Swal.fire({
+            title: `Are you sure to checkout cart ?`,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(checkoutThunkAction({
+                    cartId: cartId,
+                    cartDetails: [...cartDetails],
+                    cartInfo: {
+                        ...cartInfo
+                    },
+                    customerInfo: {
+                        ...values
+                    }
+                }))
+                toast.info('Checkout is succeed')
+                reset()
             }
         })
     }
@@ -161,40 +196,52 @@ function CartPage() {
                                 <span className="fw-bolder fs-6">${cartInfo?.total}</span>
                             </div>
                         </div>
-                        <div className="customer-info p-3">
-                            <h3 className="border-bottom py-2">Customer Info</h3>
-                            <div className="form-group mb-3">
-                                <label className="form-label">Fullname</label>
-                                <input type="text"
-                                    className='form-control'
-                                    placeholder="Fullname"
-                                />
+                        <form onSubmit={handleSubmit(handleCreateCustomerInfo)}>
+                            <div className="customer-info p-3">
+                                <h3 className="border-bottom py-2">Customer Info</h3>
+                                <div className="form-group mb-3">
+                                    <label className="form-label">Fullname</label>
+                                    <input type="text"
+                                        className={`${errors.fullname?.message ? 'is-invalid' : ''} form-control`}
+                                        placeholder="Fullname"
+                                        {...register('fullname')}
+                                    />
+                                    <span className="invalid-feedback">{errors.fullname?.message}</span>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label className="form-label">Address</label>
+                                    <input type="text"
+                                        className={`${errors.address?.message ? 'is-invalid' : ''} form-control`}
+                                        placeholder="Address"
+                                        {...register('address')}
+                                    />
+                                    <span className="invalid-feedback">{errors.address?.message}</span>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label className="form-label">Email</label>
+                                    <input type="text"
+                                        className={`${errors.email?.message ? 'is-invalid' : ''} form-control`}
+                                        placeholder="Email"
+                                        {...register('email')}
+                                    />
+                                    <span className="invalid-feedback">{errors.email?.message}</span>
+                                </div>
+                                <div className="form-group mb-3">
+                                    <label className="form-label">Mobile</label>
+                                    <input type="text"
+                                        className={`${errors.mobile?.message ? 'is-invalid' : ''} form-control`}
+                                        placeholder="Mobile"
+                                        {...register('mobile')}
+                                    />
+                                    <span className="invalid-feedback">{errors.mobile?.message}</span>
+                                </div>
                             </div>
-                            <div className="form-group mb-3">
-                                <label className="form-label">Address</label>
-                                <input type="text"
-                                    className='form-control'
-                                    placeholder="Address"
-                                />
+                            <div className="py-3 bg-success mt-2 d-flex align-items-center justify-content-center text-white btn-checkout">
+                                <button type="submit" className="btn btn-block flex-grow-1">
+                                    CHECKOUT
+                                </button>
                             </div>
-                            <div className="form-group mb-3">
-                                <label className="form-label">Email</label>
-                                <input type="text"
-                                    className='form-control'
-                                    placeholder="Email"
-                                />
-                            </div>
-                            <div className="form-group mb-3">
-                                <label className="form-label">Mobile</label>
-                                <input type="text"
-                                    className='form-control'
-                                    placeholder="Mobile"
-                                />
-                            </div>
-                        </div>
-                        <div className="py-3 bg-success mt-2 d-flex align-items-center justify-content-center text-white btn-checkout">
-                            CHECKOUT
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

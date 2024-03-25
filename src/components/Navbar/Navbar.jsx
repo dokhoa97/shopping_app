@@ -32,17 +32,17 @@ function Navbar() {
                     <div className="">
                         {
                             cartDetails?.length ? (
-                                <Link to={'/cart'} className="position-relative">
-                                    <FaShoppingCart size={20} className="me-2" role="button" />
-                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <Link to={'/cart'} className="position-relative me-4">
+                                    <FaShoppingCart size={30} className="" role="button" />
+                                    <span className=" position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {cartInfo?.subQuantity}
                                     </span>
                                 </Link>
                             ) : (
-                                <FaShoppingCart size={20} className="me-2" />
+                                <FaShoppingCart size={30} className="me-4" />
                             )
                         }
-                        <FaUser size={20} role="button" />
+                        <FaUser size={30} role="button" />
                     </div>
                 </div>
             </div>
