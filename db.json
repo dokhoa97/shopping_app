@@ -98,6 +98,59 @@
         "mobile": "+1 (274) 897-4691"
       },
       "id": 2
+    },
+    {
+      "cartId": "8e25e3ae-eb32-473a-a967-06dade04126b",
+      "cartDetails": [
+        {
+          "id": 2,
+          "title": "iPhone X",
+          "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+          "price": 899,
+          "discountPercentage": 17.94,
+          "rating": 4.44,
+          "stock": 34,
+          "brand": "Apple",
+          "category": "smartphones",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/2/1.jpg",
+            "https://cdn.dummyjson.com/product-images/2/2.jpg",
+            "https://cdn.dummyjson.com/product-images/2/3.jpg",
+            "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
+          ],
+          "newPrice": 738,
+          "quantity": 3,
+          "amount": 2214
+        }
+      ],
+      "cartInfo": {
+        "subtotal": 2214,
+        "shipping": 0,
+        "total": 2214,
+        "subQuantity": 3,
+        "orderDate": 1711446861987
+      },
+      "customerInfo": {
+        "fullname": "Do Dang Khoa",
+        "address": "Nha Be TP HCM",
+        "email": "123@gmail.com",
+        "mobile": "123456789"
+      },
+      "id": 3
+    },
+    {
+      "customerInfo": {
+        "fullname": "DO KHOA",
+        "email": "vyxyjafoxa@mailinator.com",
+        "address": "Sed sunt voluptatem",
+        "mobile": "123456789"
+      },
+      "cartInfo": {
+        "orderDate": "2024-03-26",
+        "total": "2214"
+      },
+      "id": 4
     }
   ]
 }

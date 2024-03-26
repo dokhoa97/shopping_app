@@ -2,7 +2,7 @@ import dayjs from "dayjs"
 import { useEffect } from "react"
 import { FaUser, FaUserCog, FaUserTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import orderListSlice, { openCustomerDetailThunkAction, orderListThunkAction, removeCustomerThunkAction } from "../../redux-toolkit/orderListSlice";
+import { orderListThunkAction, removeCustomerThunkAction } from "../../redux-toolkit/orderListSlice";
 import { orderListSelector } from "../../store/selectors";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -63,7 +63,7 @@ function CustomerList() {
                                             role="button"
                                             className="text-primary me-2"
                                             title="Detail Customer"
-                                            onClick={() => (dispatch(orderListSlice.actions.openDetail(item)))}
+
                                         />
                                     </Link>
                                     <FaUserCog size={15} role="button" className="text-warning" />

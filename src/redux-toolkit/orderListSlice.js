@@ -5,12 +5,8 @@ const orderListSlice = createSlice({
     initialState: {
         dataList: [],
         loading: 'idle',
-        detailList: []
     },
     reducers: {
-        openDetail: (state, action) => {
-            state.detailList = action.payload
-        }
     }, extraReducers: (builder) => {
         builder
             .addCase(orderListThunkAction.pending, (state, action) => {
