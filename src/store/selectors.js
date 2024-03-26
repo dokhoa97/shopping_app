@@ -3,11 +3,13 @@ import { priceAfterDiscount } from "../helper/helper"
 export const cartSelector = (state) => state.cart
 export const productsSelector = (state) => state.products
 export const filtersSelector = (state) => state.filters
+export const orderListSelector = (state) => state.orderlist
 export const filteredProducts = createSelector(
     productsSelector,
     filtersSelector,
     cartSelector,
-    (products, filters, cart) => {
+    orderListSelector,
+    (products, filters, cart, orderlist) => {
         const { searchText, brand, category, price, status } = filters
         let filteredProductData = {
             data: [...products.data],

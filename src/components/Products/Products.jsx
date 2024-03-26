@@ -12,7 +12,7 @@ function Products() {
     const totalRow = useSelector(state => state.products?.totalRow)
     useEffect(() => {
         dispatch(fetchDataThunkAction(limit))
-    }, [])
+    }, [dispatch])
     const loadMore = () => {
         limit += 10
         dispatch(fetchDataThunkAction(limit))

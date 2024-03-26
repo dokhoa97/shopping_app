@@ -143,3 +143,7 @@ input[type='search']::placeholder {
     color: white !important;
     border-radius: 3px;
 }
+
+.border-dashed {
+    border-bottom: 1px dashed black;
+}

@@ -14,7 +14,7 @@ const schema = yup.object({
     fullname: yup.string().required(),
     address: yup.string().required(),
     email: yup.string().email().required(),
-    mobile: yup.number().required()
+    mobile: yup.string().required()
 })
 function CartPage() {
     const { cartId, cartDetails, cartInfo } = useSelector(cartSelector)
@@ -165,7 +165,7 @@ function CartPage() {
                             </tbody>
                         </table>
                         <div className="row col-md-12">
-                            <Link to={'/product'}>
+                            <Link to={'/'}>
                                 <FaArrowLeft /> Countinue shopping
                             </Link>
                         </div>

@@ -1,9 +1,10 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom"
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom"
 import OrderListLayout from "../layouts/OrderListLayout"
 function OrderListPage() {
     const location = useLocation()
     const pathName = location.pathname.split('/').pop()
     const isActive = pathName === 'list' || pathName === 'orderlist'
+    const { itemId } = useParams()
     return (
         <OrderListLayout>
             <ul className="nav nav-tabs mb-2">
@@ -13,11 +14,15 @@ function OrderListPage() {
                         Order List
                     </NavLink>
                 </li>
-                <li className="nav-item">
-                    <NavLink to={'/orderlist/detail'} className='nav-link d-flex aglin-items-center'>
-                        Customer Detail
-                    </NavLink>
-                </li>
+                {
+                    itemId && (
+                        <li className="nav-item">
+                            <NavLink to={`${itemId}`} className='nav-link d-flex aglin-items-center'>
+                                Customer Detail
+                            </NavLink>
+                        </li>
+                    )
+                }
             </ul>
             <Outlet />
         </OrderListLayout>

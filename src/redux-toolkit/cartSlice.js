@@ -118,6 +118,14 @@ const cartSlice = createSlice({
     }
 })
 export const checkoutThunkAction = createAsyncThunk('cart/checkout', async (data) => {
-    console.log(data);
+    let res = await fetch('http://localhost:3030/orderlist', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    let result = await res.json()
+    return result
 })
 export default cartSlice
