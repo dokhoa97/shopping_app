@@ -16,7 +16,7 @@ function App() {
         <Route path='/orderlist' element={<OrderListPage />} >
           <Route index element={<CustomerList />} />
           <Route path='list' element={<CustomerList />} />
-          <Route path=':itemId' element={<CustomerDetail />} />
+          <Route path=':userId' element={<CustomerDetail />} />
         </Route>
       </Routes>
     </>

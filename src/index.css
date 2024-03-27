@@ -133,6 +133,17 @@ input[type='search']::placeholder {
     padding: 8px 20px !important;
 }
 
+.btn-signout-sm {
+    border: 1px solid blue !important;
+    border-radius: 20px !important;
+    padding: 2px 5px !important;
+}
+
+.btn-signout-sm:hover {
+    background-color: blue !important;
+    color: white !important;
+}
+
 .btn-signout:hover {
     background-color: blue !important;
     color: white !important;

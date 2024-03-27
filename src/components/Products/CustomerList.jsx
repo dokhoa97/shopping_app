@@ -36,9 +36,9 @@ function CustomerList() {
                 <tr>
                     <th className="text-center">#ID</th>
                     <th className="text-center">Fullname</th>
-                    <th className="text-center">Email</th>
+                    <th className="text-center">Mobile</th>
                     <th className="text-center">Order Date</th>
-                    <th className="text-center">Total Amount</th>
+                    <th className="text-center">Bill Total Amount</th>
                     <th className="text-center">Action</th>
                 </tr>
             </thead>
@@ -47,9 +47,9 @@ function CustomerList() {
                     dataList?.map((item, index) => (
                         <tr key={item.id}>
                             <td className="text-center ">{index + 1}</td>
-                            <td className="text-center ">{item.customerInfo.fullname}</td>
-                            <td className="text-center ">{item.customerInfo.email}</td>
-                            <td className="text-center ">{dayjs(item.cartInfo.orderDate).format('MMM DD YYYY')}</td>
+                            <td className="text-center text-primary">{item.customerInfo.fullname}</td>
+                            <td className="text-center ">{item.customerInfo.mobile}</td>
+                            <td className="text-center text-warning">{dayjs(item.cartInfo.orderDate).format('MMM DD YYYY')}</td>
                             <td className="text-center text-danger ">${item.cartInfo.subtotal}</td>
                             <td className="text-center ">
                                 <div className="d-flex align-items-center justify-content-center">

@@ -1,167 +1,91 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import dayjs from "dayjs";
-const schema = yup.object({
-    fullname: yup.string().required(),
-    address: yup.string().required(),
-    email: yup.string().email().required(),
-    mobile: yup.string().required(),
-    orderDate: yup.string().required(),
-    total: yup.string().required(),
-})
+import dayjs from "dayjs"
+import { useEffect, useState } from "react"
+import { FaSignOutAlt } from "react-icons/fa"
+import { Link, useParams } from "react-router-dom"
+
+
 function CustomerDetail() {
-    const { itemId } = useParams()
-    // const [detailCustomer, setDetailCustomer] = useState([])
-    // const [detailCart, setDetailCart] = useState({
-    //     title: '',
-    //     amount: 0,
-    //     quantity: 0
-    // })
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
-    })
+    const [detailCustomer, setDetailCustomer] = useState([])
+    const { userId } = useParams()
     useEffect(() => {
         async function getDetailCustomer() {
-            let res = await fetch(`http://localhost:3030/orderlist/${itemId}`, { method: 'GET' })
+            let res = await fetch(`http://localhost:3030/orderlist/${userId}`, { method: 'GET' })
             let data = await res.json()
-            setValue('fullname', data?.customerInfo.fullname)
-            setValue('email', data?.customerInfo.email)
-            setValue('mobile', data?.customerInfo.mobile)
-            setValue('address', data?.customerInfo.address)
-            setValue('total', data?.cartInfo.total)
-            setValue('orderDate', dayjs(data?.cartInfo.orderDate).format('YYYY-MM-DD'))
-            // setDetailCustomer(data)
+            setDetailCustomer(data)
         }
         getDetailCustomer()
-    }, [itemId])
-    const handleUpdateCutomerOrder = async (value) => {
-        const data = {
-            customerInfo: {
-                fullname: value.fullname,
-                email: value.email,
-                address: value.address,
-                mobile: value.mobile
-            },
-            cartInfo: {
-                orderDate: value.orderDate,
-                total: value.total
-            }
-
-        }
-        let res = await fetch(`http://localhost:3030/orderlist/${itemId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-        let result = await res.json()
-        console.log(result);
-    }
+    }, [userId])
+    const { customerInfo, cartDetails } = detailCustomer
     return (
-        <form onSubmit={handleSubmit(handleUpdateCutomerOrder)}>
-            <div className="d-flex flex-column justify-content-center align-items-center">
-                <p>Customer Info</p>
-                <div className="d-flex mb-3">
-                    <div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Fullname</label>
-                            <input type="text" className={`${errors.fullname?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('fullname')}
-                            />
-                            <span className="invalid-feedback">{errors.fullname?.message}</span>
+        <div className="container overflow-hidden vh-50">
+            <div className="row py-3">
+                <div className="col-md-5 col-lg-5 col-sm-12">
+                    <div className="bg-light border p-3 d-lfex flex-column">
+                        <div>
+                            <h5>Information</h5>
                         </div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Email</label>
-                            <input type="email" className={`${errors.email?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('email')}
-                            />
-                            <span className="invalid-feedback">{errors.email?.message}</span>
-                        </div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Mobile</label>
-                            <input type="text" className={`${errors.mobile?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('mobile')}
-                            />
-                            <span className="invalid-feedback">{errors.mobile?.message}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Order Date</label>
-                            <input type="date" className={`${errors.orderDate?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('orderDate')}
-                            />
-                            <span className="invalid-feedback">{errors.orderDate?.message}</span>
-                        </div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Address</label>
-                            <input type="text" className={`${errors.address?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('address')}
-                            />
-                            <span className="invalid-feedback">{errors.address?.message}</span>
-                        </div>
-                        <div className="me-3">
-                            <label htmlFor="" className="form-label">Total</label>
-                            <input type="text" className={`${errors.total?.message ? 'is-invalid' : ''} form-control`}
-                                {...register('total')}
-                            />
-                            <span className="invalid-feedback">{errors.total?.message}</span>
-                        </div>
-                    </div>
-                </div>
-                {/* <p>Detail Cart</p> */}
-                {/* <div className="d-flex">
-                    {
-                        detailCustomer?.cartDetails?.map(item => (
-                            <div key={item.id} className="border me-2 p-2">
-                                <div className="me-3 ">
-                                    <label htmlFor="" className="form-label">Product Name</label>
-                                    <input type="text" className="form-control form-control-sm"
-                                        defaultValue={item.title}
-                                        onChange={e => setDetailCart({
-                                            ...detailCart,
-                                            title: e.target.value
-                                        })}
-                                    />
-                                </div>
-                                <div className="me-3">
-                                    <label htmlFor="" className="form-label">Amount</label>
-                                    <input type="number" className="form-control form-control-sm"
-                                        defaultValue={item.amount}
-                                        onChange={e => setDetailCart({
-                                            ...detailCart,
-                                            amount: e.target.value
-                                        })}
-                                    />
-                                </div>
-                                <div className="me-3">
-                                    <label htmlFor="" className="form-label">Total of Products</label>
-                                    <input type="number" className="form-control form-control-sm"
-                                        defaultValue={item.quantity}
-                                        onChange={e => setDetailCart({
-                                            ...detailCart,
-                                            quantity: e.target.value
-                                        })}
-                                    />
-                                </div>
+                        <div className="border-top p-2 d-flex justify-content-around align-items-center">
+                            <div className="me-4 text-center">
+                                <p className="text-primary">Fullname</p>
+                                <span className="">{customerInfo?.fullname}</span>
                             </div>
-                        ))
-                    }
-                </div> */}
-            </div>
-            <div className="d-flex flex-row-reverse bd-highlight mt-4">
-                <div>
-                    <button type="button" className="btn btn-dark p-2 bd-highlight">Back</button>
+                            <div className="me-4 text-center">
+                                <p className="text-primary">Phone</p>
+                                <span className="">{customerInfo?.mobile}</span>
+                            </div>
+                        </div>
+                        <div className="border-top p-2 d-flex justify-content-around align-items-center">
+                            <div className="me-4 text-center">
+                                <p className="text-primary">Email</p>
+                                <span className="">{customerInfo?.email}</span>
+                            </div>
+                            <div className="me-4 text-center">
+                                <p className="text-primary">Address</p>
+                                <span className="">{customerInfo?.address}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="me-2">
-                    <button type="submit" className="btn btn-success p-2 bd-highlight">Save</button>
+                <div className="col-md-7 col-lg-7 col-sm-12 ">
+                    <div className="bg-light border p-3">
+                        <div>
+                            <h5>Bought Products</h5>
+                        </div>
+                        {
+                            cartDetails?.map((item, index) => (
+                                <div key={index} className="border p-2 d-flex justify-content-around">
+                                    <div className="me-4 text-center">
+                                        <p className="text-primary">#ID</p>
+                                        <span className="">{index + 1}</span>
+                                    </div>
+                                    <div className="me-4 text-center">
+                                        <p className="text-primary">Product name</p>
+                                        <span className="">{item.title}</span>
+                                    </div>
+                                    <div className="me-4 text-center">
+                                        <p className="text-primary">Amopunt</p>
+                                        <span className="">${item.amount}</span>
+                                    </div>
+                                    <div className="me-4 text-center">
+                                        <p className="text-primary">Quantity</p>
+                                        <span className="">{item.quantity}</span>
+                                    </div>
+                                    <div className="me-4 text-center">
+                                        <p className="text-primary">Order Date</p>
+                                        <span className="">{dayjs(detailCustomer.cartInfo.orderDate).format('DD MM YYYY')}</span>
+                                    </div>
+                                </div>
+
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
-        </form>
+            <Link to={'/orderlist/list'} className="btn btn-signout-sm ">
+                <FaSignOutAlt className="me-2" size={18} />
+                Back to Order List
+            </Link>
+        </div>
     )
 }
 export default CustomerDetail

@@ -9,7 +9,8 @@ const cartSlice = createSlice({
             shipping: 0,
             total: 0,
             subQuantity: 0,
-            orderDate: new Date().valueOf()
+            orderDate: new Date().valueOf(),
+            updateDate: new Date().valueOf(),
         },
         cartDetails: [],
         customerInfo: {

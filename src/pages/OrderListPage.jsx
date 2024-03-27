@@ -4,7 +4,7 @@ function OrderListPage() {
     const location = useLocation()
     const pathName = location.pathname.split('/').pop()
     const isActive = pathName === 'list' || pathName === 'orderlist'
-    const { itemId } = useParams()
+    const { userId } = useParams()
     return (
         <OrderListLayout>
             <ul className="nav nav-tabs mb-2">
@@ -15,9 +15,9 @@ function OrderListPage() {
                     </NavLink>
                 </li>
                 {
-                    itemId && (
+                    userId && (
                         <li className="nav-item">
-                            <NavLink to={`${itemId}`} className='nav-link d-flex aglin-items-center'>
+                            <NavLink to={`${userId}`} className='nav-link d-flex aglin-items-center'>
                                 Customer Detail
                             </NavLink>
                         </li>
